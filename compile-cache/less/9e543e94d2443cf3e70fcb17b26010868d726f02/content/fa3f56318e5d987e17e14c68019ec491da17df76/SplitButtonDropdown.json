@@ -1,0 +1,1 @@
+{"digest":"b06cfbd47bb1f3468b288671adea0c98bb3a2ffc","css":".btn.btn.nuclide-ui-split-button-dropdown-toggle::before {\n  font-size: 11px;\n}\n","imports":[{"path":"static/variables/ui-variables.less","digest":"3b703d5c8511c09d0cc2c851f9099d683e6d2176"},{"path":"static/variables/syntax-variables.less","digest":"812c1b7883a023f768773d14294653adcdb932d7"}],"version":1}

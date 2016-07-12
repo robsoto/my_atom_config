@@ -1,0 +1,20 @@
+{
+  "name": "nuclide-debugger-node",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main.js",
+  "version": "0.0.0",
+  "description": "Allows debugging of node processes.",
+  "atomTestRunner": "../../lib/test-runner.js",
+  "nuclide": {
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "providedServices": {
+    "nuclide-debugger-node-service": {
+      "description": "Debugger backend for node processes.",
+      "versions": {
+        "0.0.0": "provideNuclideDebuggerNode"
+      }
+    }
+  }
+}

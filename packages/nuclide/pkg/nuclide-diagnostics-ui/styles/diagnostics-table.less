@@ -1,0 +1,15 @@
+/*
+ * Use double class selector to beat specificity of `.key-binding`.
+ */
+.key-binding.key-binding-sm {
+  border: none;
+  line-height: 1;
+  margin-left: 0;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+// We have to override Atom's default for <label>.
+.nuclide-diagnostics-label {
+  margin-bottom: 0;
+}

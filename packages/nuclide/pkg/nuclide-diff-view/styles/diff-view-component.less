@@ -1,0 +1,320 @@
+@import 'ui-variables';
+@import 'syntax-variables';
+
+@revisionBubbleDiameter: 10px;
+@revisionBubbleShadowRadius: 4px;
+
+.nuclide-diff-view-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-user-select: none;
+}
+
+.nuclide-diff-view-component {
+  flex-grow: 1;
+  /* Let the `<atom-pane-container>` fill the height since it already has `flex: 1` applied. */
+  display: flex;
+}
+
+.nuclide-diff-view-tree {
+  z-index: 3;
+  border-top: 1px solid @pane-item-border-color;
+  -webkit-user-select: none;
+  white-space: nowrap;
+  overflow: auto;
+  cursor: default;
+
+  // Fill vertical and horizontal space if tree is smaller than panel.
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.nuclide-diff-timeline {
+  z-index: 3;
+  border-top: 1px solid @pane-item-border-color;
+  width: 100%;
+  color: @text-color;
+
+  .text-monospace {
+    // TODO Use a standard Atom font-family https://github.com/atom/atom/issues/8800
+    font-family: Menlo, Consolas, monospace;
+  }
+
+  .revision {
+    position: relative;
+  }
+
+  .revision-timeline-wrap {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .revision-selector  {
+    width: 100%;
+    white-space: nowrap;
+    display: flex;
+  }
+
+  .revisions {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .revision--actionable {
+    cursor: pointer;
+  }
+
+  .revision:hover .revision-label {
+    font-weight: bold;
+  }
+
+  .revision:hover .revision-bubble {
+    background-color: @text-color-info;
+    box-shadow: 0 0 0 2px @text-color-info;
+  }
+
+  .revision:hover .revision-bubble--uncommitted {
+    background-color: @text-color-warning;
+    box-shadow: 0 0 0 2px @text-color-warning;
+  }
+
+  .nuclide-diff-rev-side-button {
+    margin-left: 0.4em;
+  }
+
+  .revision:hover .revision-bubble--no-changes {
+    /*
+     * Match the app background color to give the illusion of transparency while properly cutting
+     * off the underlying line that connects this bubble to the one below it.
+     */
+    background-color: @app-background-color;
+  }
+
+  .revision-bubble {
+    background-color: @text-color-info;
+    border-radius: @revisionBubbleDiameter;
+    float: left;
+    height: @revisionBubbleDiameter;
+    width: @revisionBubbleDiameter;
+    margin: @revisionBubbleShadowRadius;
+  }
+
+  .revision-bubble::after {
+    bottom: -8px; /* Pull into the revision bubble below */
+    content: " ";
+    display: block;
+    width: 1px;
+    background-color: @text-color-info;
+    margin-left: 5px;
+    position: absolute;
+    top: 5px;
+    z-index: -1;
+  }
+
+  .revision-bubble--uncommitted {
+    background-color: @text-color-warning;
+  }
+
+  .revision-bubble--no-changes {
+    /*
+     * Match the app background color to give the illusion of transparency while properly cutting
+     * off the underlying line that connects this bubble to the one below it.
+     */
+    background-color: @app-background-color;
+  }
+
+  .selected-revision-inrange .revision-bubble:after {
+    background: @text-color-info;
+    content: " ";
+    margin-left: 1px;
+    margin-right: 1px;
+    width: 8px;
+  }
+
+  .selected-revision-inrange .revision-bubble--uncommitted:after {
+    background: linear-gradient(to bottom, @text-color-warning, @text-color-info);
+  }
+
+  .selected-revision-last .revision-bubble::after {
+    display: none;
+  }
+
+  .revision-label {
+    margin-bottom: 12px;
+    margin-left: 24px;
+  }
+
+  .selected-revision-start,
+  .selected-revision-end {
+    font-weight: bold;
+  }
+
+  .selected-revision-inrange, .selected-revision-end {
+    .revision-label {
+      color: @text-color-info;
+    }
+
+    .revision-label--uncommitted {
+      color: @text-color-warning;
+    }
+  }
+
+  .selected-revision-start .revision-bubble,
+  .selected-revision-end .revision-bubble {
+    box-shadow: 0 0 0 @revisionBubbleShadowRadius fade(@text-color-info, 25%);
+  }
+
+  .selected-revision-start .revision-bubble--uncommitted,
+  .selected-revision-end .revision-bubble--uncommitted {
+    box-shadow: 0 0 0 2px @text-color-warning;
+  }
+}
+
+.diff-view-count.tool-bar-btn {
+  &::after {
+    content: attr(data-count);
+    font-size: 0.8em;
+    margin-top: 13px;
+    position: absolute;
+    text-shadow: 0 0px 2px @base-border-color;
+  }
+  &.max-count::after {
+    margin-left: -4px;
+  }
+  &.positive-count {
+    color: @text-color-warning;
+    &:hover {
+      color: @text-color-warning;
+    }
+  }
+}
+
+.nuclide-diff-view-block-offset {
+  & when (lightness(@syntax-background-color) <= 50% ) {
+    @diff-block-offset-cross-color: lighten(@syntax-background-color, 3%);
+    .styleBlockOffset();
+  }
+
+  & when ( lightness(@syntax-background-color) >= 50% ) {
+    @diff-block-offset-cross-color: darken(@syntax-background-color, 3%);
+    .styleBlockOffset();
+  }
+}
+
+.styleBlockOffset() {
+  background: repeating-linear-gradient(
+    -45deg,
+    @diff-block-offset-cross-color,
+    @diff-block-offset-cross-color, 5px,
+    transparent 5px,
+    transparent 10px
+  );
+}
+
+// Default colors for themes that do not specify any.
+@add-color: #0c0;
+@add-color: @text-color-success;
+
+@remove-color: #c00;
+@remove-color: @text-color-error;
+
+@blendAmount: 10%;
+
+atom-text-editor, atom-text-editor::shadow {
+
+  .diff-view-insert .region {
+    @add-color-faded: fade(@add-color, @blendAmount);
+    border-left-style: solid;
+    border-left-color: @add-color;
+    border-left-width: 1px;
+    background-color: @add-color-faded;
+  }
+
+  .diff-view-delete .region {
+    @remove-color-faded: fade(@remove-color, @blendAmount);
+    border-left-style: solid;
+    border-left-color: @remove-color;
+    border-left-width: 1px;
+    background-color: @remove-color-faded;
+  }
+
+}
+
+.nuclide-diff-view-navigation-bar {
+  height: 100%;
+  width: 100%;
+}
+
+.nuclide-diff-editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.nuclide-diff-editor-wrapper {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+}
+
+.nuclide-diff-mode {
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid @pane-item-border-color;
+
+  .message-editor-wrapper {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+  }
+
+  .commit-form-wrapper {
+    margin-left: 5px;
+    margin-right: 5px;
+    overflow-y: auto;
+  }
+}
+
+.nuclide-diff-view-navigation-target {
+  position: absolute;
+  width: 100%;
+  cursor: pointer;
+
+  &.added {
+    background-color: @background-color-success;
+  }
+
+  &.removed {
+    background-color: @background-color-error;
+  }
+
+  &.modified {
+    background-color: @background-color-warning;
+  }
+}
+
+/*
+ * Animation originally taken from [atom/settings-view][1] to match its installing/uninstalling
+ * buttons.
+ *
+ * [1] https://github.com/atom/settings-view/blob/cc409bacf1c44dbd7d27626809b11ea7a01639a0/styles/package-card.less#L296
+ */
+@-webkit-keyframes btn-progress {
+  100% { background-position: -10px 0px; }
+}
+
+/*
+ * Prepend another class selector, `nuclide-diff-view-component` in this case, to beat the
+ * specificity of core styles with 2 classes + 1 tag.
+ */
+.nuclide-diff-view-component .btn.btn-progress,
+.nuclide-diff-view-component .btn.btn-progress:hover {
+  background-image: linear-gradient(to right, transparent 50%, hsla(0,0%,0%,.15) 50%);
+  background-size: 10px 100%;
+  -webkit-animation: btn-progress .5s linear infinite;
+}

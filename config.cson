@@ -3,6 +3,7 @@
     customFileTypes:
       "source.ini": [
         ".buckconfig"
+        ".flowconfig"
       ]
       "source.json": [
         ".arcconfig"
@@ -28,7 +29,6 @@
     promptWhenFileHasChangedOnDisk: false
   linter:
     errorPanelHeight: 99
-    showErrorPanel: false
   minimap:
     plugins:
       "highlight-selected": true

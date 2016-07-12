@@ -1,0 +1,344 @@
+@import "ui-variables";
+@import "syntax-variables";
+
+@nuclide-console-border-size: 1px;
+@nuclide-console-toolbar-background-color: @tab-background-color-active;
+@nuclide-console-record-background-color-normal: @syntax-background-color;
+@nuclide-console-record-text-color-normal: @syntax-text-color;
+@nuclide-console-record-border-color-normal: @base-border-color;
+@nuclide-console-record-background-color-error: lighten(@background-color-error, 25%);
+@nuclide-console-record-text-color-error: darken(@text-color-error, 40%);
+@nuclide-console-record-border-color-error: @background-color-error;
+@nuclide-console-record-background-color-warning: lighten(@background-color-warning, 25%);
+@nuclide-console-record-text-color-warning: darken(@text-color-warning, 40%);
+@nuclide-console-record-border-color-warning: @background-color-warning;
+@nuclide-console-record-vertical-padding: 1px;
+@nuclide-console-record-horizontal-padding: 5px;
+@nuclide-console-icon-size: 11px;
+
+// Color variables for `level-color` classes.
+@nuclide-console-record-background-color-red: lighten(@background-color-error, 25%);
+@nuclide-console-record-text-color-red: darken(@text-color-error, 40%);
+@nuclide-console-record-background-color-orange: lighten(@ui-site-color-3, 25%);
+@nuclide-console-record-text-color-orange: darken(@ui-site-color-3, 40%);
+@nuclide-console-record-background-color-yellow: lighten(@ui-site-color-5, 25%);
+@nuclide-console-record-text-color-yellow: darken(@ui-site-color-5, 50%);
+@nuclide-console-record-background-color-green: lighten(@ui-site-color-2, 25%);
+@nuclide-console-record-text-color-green: darken(@ui-site-color-2, 40%);
+@nuclide-console-record-background-color-blue: lighten(@ui-site-color-1, 25%);
+@nuclide-console-record-text-color-blue: darken(@ui-site-color-1, 40%);
+@nuclide-console-record-background-color-purple: lighten(@ui-site-color-4, 25%);
+@nuclide-console-record-text-color-purple: darken(@ui-site-color-4, 40%);
+@nuclide-console-record-background-color-violet: lighten(@ui-site-color-4, 35%);
+@nuclide-console-record-text-color-violet: darken(@ui-site-color-4, 30%);
+
+// Console text should be smaller than normal text. Gotta fit more!
+@nuclide-console-record-font-size: @font-size * 0.9;
+
+.nuclide-console {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: @pane-item-background-color;
+
+  .icon {
+    vertical-align: middle;
+  }
+
+  .nuclide-ui-toolbar {
+    background-color: @nuclide-console-toolbar-background-color;
+  }
+}
+
+.nuclide-console-record .icon:before,
+.nuclide-console-record pre,
+.nuclide-console atom-text-editor {
+  font-size: @nuclide-console-record-font-size;
+}
+
+.nuclide-console-scroll-pane {
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: @syntax-background-color;
+
+  // Hack: This ensures that the scrollbar appears on top of all of the records.
+  //       Without it, the atom-text-editors appear above the scrollbar.
+  transform: translate3d(0, 0, 0);
+}
+
+.nuclide-console-record {
+  display: flex;
+  align-items: center;
+  padding: @nuclide-console-record-vertical-padding @nuclide-console-record-horizontal-padding;
+  background-color: @nuclide-console-record-background-color-normal;
+  border-radius: 0;
+  border-top: @nuclide-console-border-size solid @nuclide-console-record-border-color-normal;
+
+  pre {
+    background-color: transparent;
+    color: @nuclide-console-record-text-color-normal;
+
+    // Break on words
+    word-break: normal;
+    white-space: pre-wrap;
+  }
+
+  .icon {
+    color: @nuclide-console-record-text-color-normal;
+    text-align: center;
+  }
+
+  .icon,
+  .icon::before {
+    font-size: @nuclide-console-icon-size;
+  }
+
+  .icon::before {
+    width: @nuclide-console-icon-size;
+    height: @nuclide-console-icon-size;
+  }
+
+  &:first-child {
+    border-top: none;
+  }
+
+  &:last-child {
+    border-bottom: @nuclide-console-border-size solid @nuclide-console-record-border-color-normal;
+  }
+
+  &.level-info {
+    .icon {
+      color: fadeout(@syntax-text-color, 30%);
+    }
+  }
+
+  &.level-warning {
+    background-color: @nuclide-console-record-background-color-warning;
+    border-color: @nuclide-console-record-border-color-warning;
+
+    // The border on both sides of the warning message should be the warning
+    // color unless it's a higher-level (error).
+    & + :not(.level-error) {
+      border-top-color: @nuclide-console-record-border-color-warning;
+    }
+
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-warning;
+    }
+
+    .icon {
+      color: @nuclide-console-record-border-color-warning;
+    }
+  }
+
+  &.level-error {
+    background-color: @nuclide-console-record-background-color-error;
+    border-color: @nuclide-console-record-border-color-error;
+
+    // The border on both sides of the error should be the error color.
+    & + .nuclide-console-record {
+      border-top-color: @nuclide-console-record-border-color-error;
+    }
+
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-error;
+    }
+
+    .icon {
+      color: @nuclide-console-record-border-color-error;
+    }
+
+  }
+
+  // Console record colors for `level-color` classes.
+  &.level-red {
+    background-color: @nuclide-console-record-background-color-red;
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-red;
+    }
+  }
+
+  &.level-orange {
+    background-color: @nuclide-console-record-background-color-orange;
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-orange;
+    }
+  }
+
+  &.level-yellow {
+    background-color: @nuclide-console-record-background-color-yellow;
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-yellow;
+    }
+  }
+
+  &.level-green {
+    background-color: @nuclide-console-record-background-color-green;
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-green;
+    }
+  }
+
+  &.level-blue {
+    background-color: @nuclide-console-record-background-color-blue;
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-blue;
+    }
+  }
+
+  &.level-purple {
+    background-color: @nuclide-console-record-background-color-purple;
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-purple;
+    }
+  }
+
+  &.level-violet {
+    background-color: @nuclide-console-record-background-color-violet;
+    pre, .nuclide-ui-lazy-nested-value div, .nuclide-ui-lazy-nested-value span {
+      color: @nuclide-console-record-text-color-violet;
+    }
+  }
+
+  pre {
+    display: inline;
+    padding: 0;
+    background-color: transparent;
+  }
+
+  &.request {
+    display: flex;
+    background-color: @syntax-background-color;
+  }
+
+  &.request,
+  &.response {
+    opacity: 0.7;
+  }
+
+}
+
+.nuclide-console-record-content-wrapper {
+  width: 100%;
+
+  // Give the source label a little breathing room. We don't apply this directly
+  // to the label because that would affect text wrapping around it.
+  padding-bottom: 1px;
+}
+
+.nuclide-console-record-source-label {
+  display: inline-block;
+  float: right;
+  margin: 2px 0 0 4px;
+  white-space: nowrap;
+  font-size: 0.8em; // This makes the label < 1 line tall in most themes.
+}
+
+.nuclide-console-input-wrapper {
+  display: flex;
+  background-color: @syntax-background-color;
+  padding: @nuclide-console-record-vertical-padding 0;
+  flex-grow: 1;
+}
+
+.nuclide-console-prompt {
+  display: flex;
+  padding: 5px @nuclide-console-record-horizontal-padding;
+  border-top: 1px solid @pane-item-border-color;
+  background-color: @syntax-background-color;
+  color: @syntax-text-color;
+  min-height: 30px;
+}
+
+.nuclide-console-prompt-wrapper {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.nuclide-console-prompt-label {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.8em;
+  padding-right: 1em;
+}
+
+.nuclide-console-text-editor-wrapper {
+  flex-grow: 1;
+}
+
+.nuclide-console-scroll-pane-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.nuclide-console-new-messages-notification {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  text-align: center;
+  padding-left: @component-padding;
+  padding-right: @component-padding;
+  cursor: pointer;
+
+  // Use a timing function that approximates easeOutBack.
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  &.visible {
+    // Using both margin-bottom and translateY allows us to combine percentage-
+    // and pixel-based sizes.
+    margin-bottom: @component-padding / 2;
+    // translateX to center horizontally, translateY for hiding.
+    transform: translateX(-50%) translateY(0);
+  }
+
+  &:not(.visible) {
+    margin-bottom: 0;
+    transform: translateX(-50%) translateY(100%);
+  }
+}
+
+.nuclide-console-new-messages-notification-icon {
+  text-align: left;
+
+  &::before {
+    width: auto;
+  }
+}
+
+// Target the filter field, making sure that we have a great enough specificity.
+atom-text-editor[mini].nuclide-console-filter-field {
+  // Make it butt up against the button.
+  float: left;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+
+  &.is-focused {
+    // When focused, layer this on top of the regexp button so that the outline
+    // overlays it.
+    z-index: 1;
+  }
+
+  &.invalid {
+    background-color: @nuclide-console-record-background-color-error;
+    color: @nuclide-console-record-text-color-error;
+    border-color: @nuclide-console-record-border-color-error;
+  }
+}
+
+.btn.nuclide-console-filter-regexp-button {
+  position: relative;
+  left: -1px;
+  font-weight: bold;
+  font-family: Menlo, monospace;
+}
+
+.nuclide-console-header-icon-fill {
+  fill: @text-color;
+}
+
+.nuclide-console-header-filter-icon {
+  width: 12px;
+}

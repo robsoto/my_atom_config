@@ -1,0 +1,71 @@
+@import "ui-variables";
+
+.nuclide-datatip-overlay {
+  background: @app-background-color;
+  box-shadow: 0px 1px 4px 0px rgba(0,0,0,1);
+  color: @text-color-subtle;
+  cursor: -webkit-grab;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  font-size: @font-size;
+  margin-top: -2px; // Compensate for shadow
+  position: relative;
+  white-space: nowrap;
+}
+
+.nuclide-datatip-dragging {
+  cursor: -webkit-grabbing;
+}
+
+.nuclide-datatip-container {
+  background-color: @base-background-color;
+  display: flex;
+  position: relative;
+  transition: background-color 0.15s ease;
+  &:hover {
+    background-color: mix(@base-background-color, @background-color-highlight, 50%);
+  }
+}
+
+.nuclide-datatip-content {
+  flex-grow: 1;
+
+  // Allow higher-level component to override the cursor property on certain children.
+  .list-tree {
+    cursor: inherit;
+  }
+}
+
+.nuclide-datatip-pin-button {
+  align-items: center;
+  border-left: 1px solid fade(@text-color-highlight, 10%);
+  cursor: pointer;
+  display: flex;
+  line-height: 2;
+  margin: 0.1em 0 0 0;
+  padding-left: 0.5em;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: @text-color-highlight;
+  }
+}
+
+atom-text-editor::shadow {
+
+  .nuclide-datatip-highlight-region > .region {
+    background: @background-color-highlight;
+  }
+
+  .nuclide-datatip-highlight-region-active > .region {
+    // Animations such as `RotatingBackground` must be defined in a `*.atom-text-editor.less` file.
+    -webkit-animation: RotatingBackground 1s ease-in-out infinite reverse;
+    background: linear-gradient(
+      90deg,
+      @background-color-highlight,
+      @base-background-color,
+      @background-color-highlight,
+      @base-background-color
+    );
+    background-size: 300% 100%;
+  }
+
+}

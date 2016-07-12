@@ -1,0 +1,163 @@
+# Copyright (c) 2015-present, Facebook, Inc.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the LICENSE file in
+# the root directory of this source tree.
+
+import os
+import sys
+import urlparse
+import lldb
+from handler import HandlerDomain, UndefinedHandlerError, handler
+from logging_helper import log_debug
+import file_manager
+
+
+class DebuggerDomain(HandlerDomain):
+    '''Implement Chrome debugger domain protocol and
+    convert into lldb python API.
+    '''
+    def __init__(self, runtimeDomain, **kwargs):
+        HandlerDomain.__init__(self, **kwargs)
+        self.runtimeDomain = runtimeDomain
+
+    @property
+    def name(self):
+        return 'Debugger'
+
+    @handler()
+    def canSetScriptSource(self, params):
+        # Return False, becuase we don't support
+        # changing source at runtime.
+        return {"result": False}
+
+    @handler()
+    def continueToLocation(self, params):
+        # TODO(williamsc) - This is probably setting a one off breakpoint and continuing.
+        raise UndefinedHandlerError('continueToLocation not implemented')
+
+    @handler()
+    def disable(self, params):
+        # Not exactly the same as disable. Detach() might be closer to
+        # what Chrome Dev Tools is trying to do.
+        self.debugger_store.debugger.GetSelectedTarget().DisableAllBreakpoints()
+        return {}
+
+    @handler()
+    def enable(self, params):
+        self.debugger_store.debugger.HandleCommand('command script import ./data_formatter.py')
+        self.debugger_store.chrome_channel.enable()
+        return {}
+
+    @handler()
+    def evaluateOnCallFrame(self, params):
+        frameId = params['callFrameId']
+
+        thread, frame = frameId.split('.')
+        # TODO: These return booleans to indicate success. Throw something if False.
+        process = self.debugger_store.debugger.GetSelectedTarget().process
+        process.SetSelectedThreadByIndexID(int(thread))
+        process.GetSelectedThread().SetSelectedFrame(int(frame))
+
+        return self.runtimeDomain.evaluate(params)
+
+    @handler()
+    def pause(self, params):
+        self.debugger_store.debugger.GetSelectedTarget().process.Stop()
+        return {}
+
+    @handler()
+    def removeBreakpoint(self, params):
+        self.debugger_store.debugger.GetSelectedTarget().BreakpointDelete(int(params['breakpointId']))
+        return {}
+
+    @handler()
+    def resume(self, params):
+        self.debugger_store.debugger.GetSelectedTarget().process.Continue()
+        return {}
+
+    @handler()
+    def selectThread(self, params):
+        threadId = params['threadId']
+        self.debugger_store.debugger.GetSelectedTarget().process.SetSelectedThreadByID(threadId)
+        return {}
+
+    @handler()
+    def getThreadStack(self, params):
+        threadId = params['threadId']
+        thread = self.debugger_store.debugger.GetSelectedTarget().process.GetThreadByID(threadId)
+        params = { "callFrames": [] }
+        if not thread == None:
+            params["callFrames"] = self.debugger_store.thread_manager.get_thread_stack(thread)
+        return params
+
+    @handler()
+    def searchInContent(self, params):
+        raise UndefinedHandlerError('searchInContent not implemented')
+
+    @handler()
+    def setBreakpoint(self, params):
+        filelike = self.debugger_store.file_manager.get_by_script_id(params['location']['scriptId'])
+        if not filelike or not isinstance(filelike, file_manager.File):
+            # Only support setting breakpoints in real files.
+            return {}
+        return self._set_breakpoint_by_filespec(
+            filelike.server_obj,
+            int(params['location']['lineNumber']) + 1)
+
+    @handler()
+    def setBreakpointByUrl(self, params):
+        # Use source file name to set breakpoint.
+        parsed_url = urlparse.urlparse(params['url'])
+        return self._set_breakpoint_by_source_path(
+            str(os.path.basename(parsed_url.path)),
+            int(params['lineNumber']) + 1)
+
+    @handler()
+    def setBreakpointsActive(self, params):
+        if params['active']:
+            self.debugger_store.debugger.GetSelectedTarget().EnableAllBreakpoints()
+        else:
+            self.debugger_store.debugger.GetSelectedTarget().DisableAllBreakpoints()
+        return {}
+
+    @handler()
+    def setPauseOnExceptions(self, params):
+        # TODO(williamsc) - Support add support for pausing on exceptions
+        raise UndefinedHandlerError('setPauseOnExceptions not implemented')
+
+    @handler()
+    def setScriptSource(self, params):
+        raise UndefinedHandlerError('setScriptSource not supported for LLDB')
+
+    @handler()
+    def stepInto(self, params):
+        self.debugger_store.debugger.GetSelectedTarget().GetProcess().GetSelectedThread().StepInto()
+        return {}
+
+    @handler()
+    def stepOut(self, params):
+        self.debugger_store.debugger.GetSelectedTarget().GetProcess().GetSelectedThread().StepOut()
+        return {}
+
+    @handler()
+    def stepOver(self, params):
+        self.debugger_store.debugger.GetSelectedTarget().GetProcess().GetSelectedThread().StepOver()
+        return {}
+
+    def _set_breakpoint_by_filespec(self, filespec, line):
+        breakpoint = self.debugger_store.debugger.GetSelectedTarget().BreakpointCreateByLocation(filespec, line)
+        return {
+            'breakpointId': str(breakpoint.id),
+            'locations':
+                self.debugger_store.location_serializer.get_breakpoint_locations(breakpoint),
+        }
+
+    def _set_breakpoint_by_source_path(self, source_path, line):
+        breakpoint = self.debugger_store.debugger.GetSelectedTarget().BreakpointCreateByLocation(
+            source_path,
+            line)
+        return {
+            'breakpointId': str(breakpoint.id),
+            'locations': self.debugger_store.location_serializer.get_breakpoint_locations(breakpoint),
+        }

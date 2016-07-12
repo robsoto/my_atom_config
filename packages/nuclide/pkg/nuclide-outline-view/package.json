@@ -1,0 +1,46 @@
+{
+  "name": "nuclide-outline-view",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main.js",
+  "version": "0.0.0",
+  "description": "Extensible UI to display an outline of the current file",
+  "atomTestRunner": "../../lib/test-runner.js",
+  "nuclide": {
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "consumedServices": {
+    "nuclide-outline-view": {
+      "versions": {
+        "0.0.0": "consumeOutlineProvider"
+      }
+    },
+    "tool-bar": {
+      "versions": {
+        "^0 || ^1": "consumeToolBar"
+      }
+    },
+    "nux-register": {
+      "versions": {
+        ">=0.0.0": "consumeRegisterNuxService"
+      }
+    }
+  },
+  "providedServices": {
+    "nuclide-home.homeFragments": {
+      "versions": {
+        "0.0.0": "getHomeFragments"
+      }
+    },
+    "nuclide-distraction-free-mode": {
+      "versions": {
+        "0.0.0": "getDistractionFreeModeProvider"
+      }
+    },
+    "nuclide-outline-view-results-stream": {
+      "versions": {
+        "0.0.0": "getOutlineViewResultsStream"
+      }
+    }
+  }
+}

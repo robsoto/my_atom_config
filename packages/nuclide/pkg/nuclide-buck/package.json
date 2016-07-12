@@ -1,0 +1,51 @@
+{
+  "name": "nuclide-buck",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main.js",
+  "version": "0.0.0",
+  "description": "Buck integration for Nuclide.",
+  "atomTestRunner": "../../lib/test-runner.js",
+  "nuclide": {
+    "packageType": "Atom",
+    "testRunner": "apm",
+    "configMetadata": {
+      "pathComponents": [
+        "IDE",
+        "Buck"
+      ]
+    },
+    "config": {
+      "pathToBuck": {
+        "title": "Path to Buck Executable",
+        "type": "string",
+        "default": "buck",
+        "description": "Absolute path to the Buck executable on your system."
+      }
+    }
+  },
+  "consumedServices": {
+    "nuclide.build-system-registry": {
+      "versions": {
+        "0.0.0": "consumeBuildSystemRegistry"
+      }
+    },
+    "nuclide-current-working-directory": {
+      "versions": {
+        "0.0.0": "consumeCurrentWorkingDirectory"
+      }
+    },
+    "nuclide-output": {
+      "versions": {
+        "0.0.0": "consumeOutputService"
+      }
+    }
+  },
+  "providedServices": {
+    "hyperclick.provider": {
+      "versions": {
+        "0.0.0": "getHyperclickProvider"
+      }
+    }
+  },
+  "activationCommands": {}
+}

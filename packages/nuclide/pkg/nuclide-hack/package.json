@@ -1,0 +1,109 @@
+{
+  "name": "nuclide-hack",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main.js",
+  "version": "0.0.0",
+  "description": "Provides hack language support in Nuclide",
+  "atomTestRunner": "../../lib/test-runner.js",
+  "nuclide": {
+    "configMetadata": {
+      "pathComponents": [
+        "Language",
+        "Hack"
+      ]
+    },
+    "config": {
+      "hhClientPath": {
+        "title": "Overrides default path for hh_client.",
+        "type": "string",
+        "default": "",
+        "description": "Primarily for testing new versions of hh_client."
+      },
+      "useIdeConnection": {
+        "title": "Use persistent IDE connection to hh_client",
+        "type": "boolean",
+        "default": false,
+        "description": "In Development: For use by Hack/Nuclide team only."
+      },
+      "logLevel": {
+        "title": "Log Level",
+        "type": "string",
+        "default": "INFO",
+        "description": "Specify that level of logging, supported values: ALL | TRACE | DEBUG | INFO | WARN | ERROR | FATAL | OFF.",
+        "enum": [
+          "ALL",
+          "TRACE",
+          "DEBUG",
+          "INFO",
+          "WARN",
+          "ERROR",
+          "FATAL",
+          "OFF"
+        ]
+      }
+    },
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "activationHooks": [
+    "language-php:grammar-used",
+    "nuclide-language-hack:grammar-used"
+  ],
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "2.0.0": "createAutocompleteProvider"
+      }
+    },
+    "nuclide-busy-signal": {
+      "versions": {
+        "0.1.0": "provideBusySignal"
+      }
+    },
+    "nuclide-definition-provider": {
+      "versions": {
+        "0.0.0": "provideDefinitions"
+      }
+    },
+    "nuclide-diagnostics-provider": {
+      "versions": {
+        "0.1.0": "provideDiagnostics"
+      }
+    },
+    "nuclide-code-format.provider": {
+      "versions": {
+        "0.0.0": "createCodeFormatProvider"
+      }
+    },
+    "nuclide-find-references.provider": {
+      "versions": {
+        "0.0.0": "createFindReferencesProvider"
+      }
+    },
+    "nuclide-type-hint.provider": {
+      "versions": {
+        "0.0.0": "createTypeHintProvider"
+      }
+    },
+    "nuclide-evaluation-expression.provider": {
+      "versions": {
+        "0.0.0": "createEvaluationExpressionProvider"
+      }
+    },
+    "nuclide-code-highlight.provider": {
+      "versions": {
+        "0.0.0": "createCodeHighlightProvider"
+      }
+    },
+    "nuclide-outline-view": {
+      "versions": {
+        "0.0.0": "provideOutlines"
+      }
+    },
+    "nuclide-type-coverage": {
+      "versions": {
+        "0.0.0": "provideCoverage"
+      }
+    }
+  }
+}

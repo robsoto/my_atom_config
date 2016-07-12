@@ -1,0 +1,51 @@
+{
+  "name": "nuclide-ocaml",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main.js",
+  "version": "0.0.0",
+  "description": "Provides support for OCaml in Nuclide",
+  "activationCommands": {},
+  "atomTestRunner": "../../lib/test-runner.js",
+  "nuclide": {
+    "configMetadata": {
+      "pathComponents": [
+        "Language",
+        "Ocaml"
+      ]
+    },
+    "config": {
+      "pathToMerlin": {
+        "title": "Path to Merlin Executable",
+        "type": "string",
+        "default": "ocamlmerlin"
+      }
+    },
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "activationHooks": [
+    "language-ocaml:grammar-used"
+  ],
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "2.0.0": "createAutocompleteProvider"
+      }
+    },
+    "hyperclick.provider": {
+      "versions": {
+        "0.0.0": "getHyperclickProvider"
+      }
+    },
+    "linter": {
+      "versions": {
+        "1.0.0": "provideLinter"
+      }
+    },
+    "nuclide-type-hint.provider": {
+      "versions": {
+        "0.0.0": "createTypeHintProvider"
+      }
+    }
+  }
+}

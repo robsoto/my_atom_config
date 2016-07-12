@@ -1,0 +1,91 @@
+@import 'ui-variables';
+
+.nuclide-find-references {
+  background-color: @base-background-color;
+  color: @text-color;
+  font-size: @font-size;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: -webkit-flex;
+  flex-direction: column;
+}
+
+.nuclide-find-references-loading {
+  margin: auto;
+}
+
+.nuclide-find-references-count {
+  -webkit-flex-shrink: 0;
+}
+
+.nuclide-find-references-files {
+  padding: 0 12px;
+  position: relative;
+  overflow: auto;
+  -webkit-flex: 1;
+}
+
+.nuclide-find-references-file {
+}
+
+.nuclide-find-references-filename {
+  font-size: 1.1em;
+  word-break: break-all;
+}
+
+.nuclide-find-references-ref-count {
+  margin-left: 6px;
+  position: relative;
+  top: -2px;
+}
+
+.nuclide-find-references-refs {
+  margin: 4px 0 0 16px;
+  padding: 0;
+}
+
+.nuclide-find-references-ref {
+  margin-bottom: 12px;
+  color: @text-color-subtle;
+}
+
+.nuclide-find-references-ref-name {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.nuclide-find-references-file-preview {
+  display: flex;
+  margin-top: 4px;
+
+  atom-text-editor[mini] {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    flex: 1;
+    font-size: @font-size;
+    line-height: @component-line-height;
+    max-height: none;
+  }
+
+  atom-text-editor::shadow .highlight.reference .region {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.nuclide-find-references-line-number-column {
+  background: @base-border-color;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  font-family: Menlo, Monaco, Consolas, monospace;
+  padding: 0 0.5em;
+}
+
+.nuclide-find-references-line-number {
+  color: @text-color-selected;
+  line-height: @component-line-height;
+}

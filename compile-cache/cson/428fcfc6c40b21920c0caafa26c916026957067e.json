@@ -1,0 +1,1 @@
+{"*":{"core":{"disabledPackages":["linter-pylint"],"themes":["one-dark-ui","afterglow-like"]},"editor":{"backUpBeforeSaving":true,"fontSize":16,"scrollPastEnd":true,"softWrap":true,"softWrapHangingIndent":2},"linter":{"errorPanelHeight":99},"minimap":{"plugins":{"highlight-selected":true,"highlight-selectedDecorationsZIndex":0}},"welcome":{"showOnStartup":false}}}

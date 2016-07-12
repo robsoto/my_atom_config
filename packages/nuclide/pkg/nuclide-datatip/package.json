@@ -1,0 +1,34 @@
+{
+  "name": "nuclide-datatip",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main.js",
+  "version": "0.0.0",
+  "description": "Provides a datatip service for rendering persistent windows in the editor",
+  "atomTestRunner": "../../lib/test-runner.js",
+  "nuclide": {
+    "configMetadata": {
+      "pathComponents": [
+        "IDE",
+        "Datatip"
+      ]
+    },
+    "config": {
+      "datatipDebounceDelay": {
+        "title": "Datatip debounce delay",
+        "description": "Delay (in ms) between hovering over an identifier and showing a datatip",
+        "type": "number",
+        "default": 200,
+        "minimum": 1
+      }
+    },
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "providedServices": {
+    "nuclide-datatip.provider": {
+      "versions": {
+        "0.0.0": "provideDatatipService"
+      }
+    }
+  }
+}

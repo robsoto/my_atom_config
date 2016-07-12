@@ -1,0 +1,41 @@
+{
+  "name": "nuclide-test-runner",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main.js",
+  "version": "0.0.0",
+  "description": "A panel for running tests provided by test runner service packages",
+  "atomTestRunner": "../../lib/test-runner.js",
+  "nuclide": {
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "consumedServices": {
+    "nuclide-file-tree.context-menu": {
+      "versions": {
+        "0.1.0": "addItemsToFileTreeContextMenu"
+      }
+    },
+    "nuclide-test-runner.provider": {
+      "versions": {
+        "0.0.0": "consumeTestRunner"
+      }
+    },
+    "tool-bar": {
+      "versions": {
+        "^0 || ^1": "consumeToolBar"
+      }
+    }
+  },
+  "providedServices": {
+    "nuclide-home.homeFragments": {
+      "versions": {
+        "0.0.0": "getHomeFragments"
+      }
+    },
+    "nuclide-distraction-free-mode": {
+      "versions": {
+        "0.0.0": "getDistractionFreeModeProvider"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "menu": [
+    {
+      "label": "Nuclide",
+      "submenu": [
+        {
+          "label": "Source Control",
+          "submenu": [
+            {
+              "label": "Open in Diff View...",
+              "command": "nuclide-diff-view:open"
+            },
+            {
+              "label": "Commit",
+              "command": "nuclide-diff-view:commit"
+            },
+            {
+              "label": "Amend",
+              "command": "nuclide-diff-view:amend"
+            },
+            {
+              "label": "Publish to Phabricator",
+              "command": "nuclide-diff-view:publish"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

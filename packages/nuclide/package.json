@@ -127,8 +127,8 @@
   },
   "_id": "nuclide@0.151.0",
   "_shasum": "200309701cd7c74e47e47d1faf4e9b45bf12aed8",
-  "_resolved": "file:../d-116612-2506-1mgg2p5/package.tgz",
-  "_from": "../d-116612-2506-1mgg2p5/package.tgz",
+  "_resolved": "file:../d-116612-4628-h32mgw/package.tgz",
+  "_from": "../d-116612-4628-h32mgw/package.tgz",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [

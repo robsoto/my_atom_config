@@ -1,0 +1,19 @@
+{
+  "name": "nuclide-source-control-side-bar",
+  "repository": "https://github.com/facebook/nuclide",
+  "main": "./lib/main.js",
+  "version": "0.0.0",
+  "description": "Source control management in your nuclide-side-bar",
+  "atomTestRunner": "../../lib/test-runner.js",
+  "nuclide": {
+    "packageType": "Atom",
+    "testRunner": "apm"
+  },
+  "consumedServices": {
+    "nuclide-side-bar": {
+      "versions": {
+        "1.0.0": "consumeNuclideSideBar"
+      }
+    }
+  }
+}

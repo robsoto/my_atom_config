@@ -1,0 +1,28 @@
+{
+  "menu": [
+    {
+      "label": "View",
+      "submenu": [
+        {"command": "nuclide-side-bar:toggle", "label": "Toggle Side Bar"}
+      ]
+    },
+    {
+      "label": "Nuclide",
+      "submenu": [
+        {
+          "label": "Side Bar",
+          "submenu": [
+            {
+              "command": "nuclide-side-bar:toggle",
+              "label": "Toggle"
+            },
+            {
+              "command": "nuclide-side-bar:toggle-focus",
+              "label": "Toggle Focus"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
