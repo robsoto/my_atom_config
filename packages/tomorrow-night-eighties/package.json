@@ -1,0 +1,35 @@
+{
+  "name": "tomorrow-night-eighties",
+  "theme": "syntax",
+  "version": "0.5.0",
+  "private": false,
+  "description": "An atom conversion of the Tomorrow Night Eighties theme.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blakehall/tomorrow-night-eighties.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "readme": "# tomorrow-night-eighties theme\n\nBased on the Tomorrow Night Eighties theme.\n\n![](https://api.monosnap.com/image/download?id=F9oH4Z8VvmMO6hYst81wDJzrEBmR8h)\n\n\n`#2d2d2d` Background\n`#393939` Current Line\n`#515151` Selection\n`#cccccc` Foreground\n`#999999` Comment\n`#f2777a` Red\n`#f99157` Orange\n`#ffcc66` Yellow\n`#99cc99` Green\n`#66cccc` Aqua\n`#6699cc` Blue\n`#cc99cc` Purple\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/blakehall/tomorrow-night-eighties/issues"
+  },
+  "homepage": "https://github.com/blakehall/tomorrow-night-eighties#readme",
+  "_id": "tomorrow-night-eighties@0.5.0",
+  "_shasum": "b1cc3e6698620a24d8545e668879d750936614f5",
+  "_resolved": "file:../d-116424-24389-1lljbkm/package.tgz",
+  "_from": "../d-116424-24389-1lljbkm/package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
+  }
+}
